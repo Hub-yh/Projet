@@ -7,7 +7,7 @@ class Book(Order):
     nbObj = 0
     def __init__(self, name):
         self.Name = name
-        Ord = []
+        self.buyOrd = []
         self.sellOrd = []
     def __str__(self):
         res = "" 
@@ -22,7 +22,7 @@ class Book(Order):
         new_ = Order(volume, price)
         to_add = {'id':self.nbObj,'ordre':new_}
         print('--- Insert BUY %i@%g id= %d On %s' % (new_.vol,new_.prx, Book.nbObj,self.Name))
-        if not(self.buyOrd)==False:
+        if len(self.buyOrd)!=0:
             boule = self.OperationB(to_add)
         if boule == True:
             self.buyOrd.append(to_add)
@@ -35,7 +35,7 @@ class Book(Order):
         new_ = Order(volume, price)
         to_add = {"id":self.nbObj,"ordre":new_}
         print('--- Insert SELL %i@%g id= %d On %s' % (new_.vol,new_.prx, Book.nbObj,self.Name))
-        if not(self.sellOrd)==False:
+        if len(self.sellOrd)!=0:
             boule = self.OperationS(to_add)
         if boule == True:
             self.sellOrd.append(to_add)
@@ -58,10 +58,10 @@ class Book(Order):
                 else:
                     self.sellOrd[0].get("ordre").vol -= temp
                 self.SortedB()
-           if(to_add.get("ordre").vol<=0):
-               boule = False
-               condi = True
-            if self.buyOrd[0].get("ordre").prx < to_add.get("ordre").prx:
+            if(to_add.get("ordre").vol<=0):
+                boule = False
+                condi = True
+            if self.sellOrd[0].get("ordre").prx > to_add.get("ordre").prx:
                 condi = True
         print("Book on " + self.Name)
         return boule
@@ -80,8 +80,8 @@ class Book(Order):
             if(to_add.get("ordre").vol<=0):
                 boule = False
                 condi = True
-             if self.buyOrd[0].get("ordre").prx < to_add.get("ordre").prx:
-                 condi = True
+            if self.buyOrd[0].get("ordre").prx < to_add.get("ordre").prx:
+                condi = True
         print("Book on " + self.Name)
         return boule
 
