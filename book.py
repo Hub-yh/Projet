@@ -24,6 +24,8 @@ class Book(Order):
         print('--- Insert BUY %i@%g id= %d On %s' % (new_.vol,new_.prx, Book.nbObj,self.Name))
         if len(self.buyOrd)!=0:
             boule = self.OperationB(to_add)
+        else:
+            print("Book on " + self.Name)
         if boule == True:
             self.buyOrd.append(to_add)
         self.SortedB()
@@ -37,6 +39,8 @@ class Book(Order):
         print('--- Insert SELL %i@%g id= %d On %s' % (new_.vol,new_.prx, Book.nbObj,self.Name))
         if len(self.sellOrd)!=0:
             boule = self.OperationS(to_add)
+        else:
+            print("Book on " + self.Name)
         if boule == True:
             self.sellOrd.append(to_add)
         self.SortedB()
@@ -54,9 +58,11 @@ class Book(Order):
                 temp = to_add.get("ordre").vol
                 to_add.get("ordre").vol -= self.sellOrd[0].get("ordre").vol
                 if temp >= self.sellOrd[0].get("ordre").vol:
+                    print("Execute %i at %g on %s" % (self.sellOrd[0].get("ordre").vol,to_add.get("ordre").prx, self.Name))
                     del(self.sellOrd[0])
                 else:
                     self.sellOrd[0].get("ordre").vol -= temp
+                    print("Execute %i at %g on %s" % (temp,to_add.get("ordre").prx, self.Name))
                 self.SortedB()
             if(to_add.get("ordre").vol<=0):
                 boule = False
@@ -73,9 +79,11 @@ class Book(Order):
                 temp = to_add.get("ordre").vol
                 to_add.get("ordre").vol -= self.buyOrd[0].get("ordre").vol
                 if temp >= self.buyOrd[0].get("ordre").vol:
+                    print("Execute %i at %g on %s" % (self.buyOrd[0].get("ordre").vol,self.buyOrd[0].get("ordre").prx, self.Name))
                     del(self.buyOrd[0])
                 else:
                     self.buyOrd[0].get("ordre").vol -= temp
+                    print("Execute %i at %g on %s" % (temp,self.buyOrd[0].get("ordre").prx, self.Name))
                 self.SortedB()
             if(to_add.get("ordre").vol<=0):
                 boule = False

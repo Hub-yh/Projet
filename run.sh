@@ -1,4 +1,4 @@
-pip3 install virtual env --force-reinstall
+pip3 install virtual env
 pip install --upgrade virtualenv
 pip3 install pandas
 if [[ ! -d ".virtualenv" ]]
