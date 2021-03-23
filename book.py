@@ -1,4 +1,4 @@
-
+import pandas as pd
 class Order:
     def __init__(self, volume, price):
         self.vol = volume
@@ -9,13 +9,15 @@ class Book(Order):
         self.Name = name
         self.buyOrd = []
         self.sellOrd = []
-    def __str__(self):
-        res = "" 
+    def display(self):
+        res1=pd.DataFrame(columns=['Order', 'VolumePrix', 'ID'])
+        res2=pd.DataFrame(columns=['Order', 'VolumePrix', 'ID'])
         for i in range(len(self.sellOrd)):
-            res = res+"SELL %i@%g id=%i" % (self.sellOrd[i].get("ordre").vol,self.sellOrd[i].get("ordre").prx,self.sellOrd[i].get("id"))+"\n"
+            res1 = res1.append({'Order' : 'SELL' , 'VolumePrix' : "%i@%g" % (self.sellOrd[i].get("ordre").vol, self.sellOrd[i].get("ordre").prx), 'ID' : "id=%i" % self.sellOrd[i].get("id")} , ignore_index=True)
         for i in range(len(self.buyOrd)):
-            res = res+"BUY %i@%g id=%i" % (self.buyOrd[i].get("ordre").vol,self.buyOrd[i].get("ordre").prx,self.buyOrd[i].get("id"))+"\n"
-        return res
+            res2 = res2.append({'Order' : 'BUY' , 'VolumePrix' : "%i@%g" % (self.buyOrd[i].get("ordre").vol, self.buyOrd[i].get("ordre").prx), 'ID' : "id=%i" % self.buyOrd[i].get("id")}, ignore_index=True)
+        res = pd.concat([res1,res2])
+        print(res)
     def Inser_buy(self, volume, price):
         boule = True
         Book.nbObj = Book.nbObj +1
@@ -29,7 +31,7 @@ class Book(Order):
         if boule == True:
             self.buyOrd.append(to_add)
         self.SortedB()
-        print(self)
+        self.display()
         print("--------------------------------")
     def Inser_sell(self,volume, price):
         boule = True
@@ -44,7 +46,7 @@ class Book(Order):
         if boule == True:
             self.sellOrd.append(to_add)
         self.SortedB()
-        print(self)
+        self.display()
         print("--------------------------------")
     def SortedB(self):
         self.buyOrd = sorted(self.buyOrd,key=lambda k:k["ordre"].prx, reverse=True)
